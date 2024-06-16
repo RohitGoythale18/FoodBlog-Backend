@@ -8,10 +8,12 @@ const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: ['https://foodmania-foodblog.netlify.app/'],
+}));
 
-app.use(express.static('public'));
-app.use('https://foodblog-backend.onrender.com/', routes);
+app.use('/', routes);
 
 
 mongoose.connect('mongodb+srv://rohitgoythale23:rohitgoythale23@foodblog.jrvcnai.mongodb.net/')
