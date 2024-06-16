@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 10000;
 app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
-    origin: ['https://foodmania-foodblog.netlify.app/'],
+    origin: ['https://foodmania-foodblog.netlify.app'],
 }));
 
 app.use('/', routes);
