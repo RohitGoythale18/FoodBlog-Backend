@@ -10,7 +10,8 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/', routes);
+app.use(express.static('public'));
+app.use('https://foodblog-backend.onrender.com/', routes);
 
 
 mongoose.connect('mongodb+srv://rohitgoythale23:rohitgoythale23@foodblog.jrvcnai.mongodb.net/')
