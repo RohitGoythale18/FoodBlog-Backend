@@ -21,5 +21,5 @@ mongoose.connect('mongodb+srv://rohitgoythale23:rohitgoythale23@foodblog.jrvcnai
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on https://foodblog-backend.onrender.com:${PORT}`);
 });
