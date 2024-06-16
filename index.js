@@ -5,7 +5,7 @@ const cors = require('cors');
 const routes = require('./routes');
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -21,5 +21,5 @@ mongoose.connect('mongodb+srv://rohitgoythale23:rohitgoythale23@foodblog.jrvcnai
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
 app.listen(PORT, () => {
-    console.log(`Server is running on https://foodblog-backend.onrender.com:${PORT}`);
+    console.log(`Server is running on https://foodblog-backend.onrender.com`);
 });
