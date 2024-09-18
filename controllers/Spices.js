@@ -4,20 +4,28 @@ const { default: mongoose } = require('mongoose');
 module.exports.addSpices = async (req, res) => {
     const { recipeName, recipeIngredients, recipeSteps } = req.body;
 
+    const spiceFound = await Spices.findOne({ recipeName });
+
+    if (spiceFound) {
+        return res.status(400).send({ msg: "Recipe already exists" });
+    }
+
     try {
-        const OldSpices = await Spices.findOne({ recipeName });
+        const newSpice = await Spices.create({
+            recipeName,
+            recipeIngredients,
+            recipeSteps,
+            recipeImage: req.file.path,
+        });
 
-        if (OldSpices) {
-            return res.status(400).send({ msg: "Recipe already exists" });
-        }
-
-        const NewSpices = new Spices({ recipeName, recipeIngredients, recipeSteps });
-        await NewSpices.save();
-
-        res.status(201).send({ msg: "Recipe added successfully" });
-    } catch (err) {
-        console.error('Error adding recipe:', err);
-        res.status(500).send({ msg: "Error adding recipe", error: err.message });
+        res.json({
+            status: 'success',
+            data: {
+                "recipe id": newSpice._id,
+            },
+        });
+    } catch (error) {
+        res.status(500).send({ msg: "Error adding recipe", error: error.message });
     }
 };
 

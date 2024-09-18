@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,10 +9,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use(cors({
-    credentials: true,
-    origin: ['https://foodmania-foodblog.netlify.app'],
-}));
+app.use(cors(
+    {
+        credentials: true,
+        origin: ['https://foodmania-foodblog.netlify.app'],
+    }
+));
 
 app.use('/', routes);
 

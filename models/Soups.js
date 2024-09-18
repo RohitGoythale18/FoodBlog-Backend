@@ -12,7 +12,10 @@ const soupsSchema = new mongoose.Schema({
     recipeSteps: {
         type: String,
         required: true
-    }
+    },
+    recipeImage:{
+        type: String,
+    },
 });
 
 module.exports = mongoose.model('Soups', soupsSchema);

@@ -4,20 +4,28 @@ const { default: mongoose } = require('mongoose');
 module.exports.addSweets = async (req, res) => {
     const { recipeName, recipeIngredients, recipeSteps } = req.body;
 
+    const sweetFound = await Sweets.findOne({ recipeName });
+
+    if (sweetFound) {
+        return res.status(400).send({ msg: "Recipe already exists" });
+    }
+
     try {
-        const OldSweets = await Sweets.findOne({ recipeName });
+        const newSweet = await Sweets.create({
+            recipeName,
+            recipeIngredients,
+            recipeSteps,
+            recipeImage: req.file.path,
+        });
 
-        if (OldSweets) {
-            return res.status(400).send({ msg: "Recipe already exists" });
-        }
-
-        const NewSweets = new Sweets({ recipeName, recipeIngredients, recipeSteps });
-        await NewSweets.save();
-
-        res.status(201).send({ msg: "Recipe added successfully" });
-    } catch (err) {
-        console.error('Error adding recipe:', err);
-        res.status(500).send({ msg: "Error adding recipe", error: err.message });
+        res.json({
+            status: 'success',
+            data: {
+                "recipe id": newSweet._id,
+            },
+        });
+    } catch (error) {
+        res.status(500).send({ msg: "Error adding recipe", error: error.message });
     }
 };
 
@@ -32,18 +40,7 @@ module.exports.getSweets = async (req, res) => {
 };
 
 module.exports.updateLikeStatus = async (req, res) => {
-    const { id, liked } = req.body;
-
-    try {
-        const sweets = await Sweets.findByIdAndUpdate(id, { liked }, { new: true });
-        if (!sweets) {
-            return res.status(404).send({ message: "Sweets not found" });
-        }
-        res.status(200).send({ message: "Like status updated successfully", sweets });
-    } catch (err) {
-        console.error('Error updating like status:', err);
-        res.status(500).send({ msg: "Internal error occurred", error: err.message });
-    }
+    
 };
 
 module.exports.getSweetsById = async (req, res) => {
@@ -60,14 +57,28 @@ module.exports.getSweetsById = async (req, res) => {
 };
 
 module.exports.updateSweets = async (req, res) => {
+    const { recipeName, recipeIngredients, recipeSteps } = req.body;
+
     try {
-        const sweets = await Sweets.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!sweets) {
+        const sweetFound = await Sweets.findOne({ recipeName });
+
+        if (!sweetFound) {
             return res.status(404).send({ message: "Sweets not found" });
         }
-        res.status(200).send(sweets);
-    } catch (err) {
-        console.error('Error updating sweets:', err);
+
+        const updateSweet = await Sweets.findByIdAndUpdate(req.params.id, {
+            recipeName,
+            recipeIngredients,
+            recipeSteps,
+            recipeImage: req.file.path,
+        }, {
+            new: true,
+        });
+
+        res.json({
+            status: 'updated'
+        });
+    } catch (error) {
         res.status(500).send({ msg: "Internal error occurred", error: err.message });
     }
 };

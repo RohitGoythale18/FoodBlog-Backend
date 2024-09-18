@@ -13,6 +13,9 @@ const sweetsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    recipeImage:{
+        type: String,
+    },
     liked: {
         type: Boolean,
         default: false
